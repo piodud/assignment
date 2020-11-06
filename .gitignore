@@ -1,6 +1,7 @@
 ### custom .gitignore ###
 .env
 commands.txt
+.idea/
 
 ### DEFAULT .gitignore for Django projects: ###
 # Byte-compiled / optimized / DLL files
