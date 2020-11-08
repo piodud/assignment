@@ -1,14 +1,16 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
+from .models import GeoLocationData
 from rest_framework import serializers
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = ['url', 'username', 'email']
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class GeoLocationDataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Group
-        fields = ['url', 'name']
+        model = GeoLocationData
+        fields = ['user', 'ip', 'url', 'latitude', 'longitude', 'local_time', 'is_proxy',
+                  'isp', 'continent', 'country', 'region', 'zip', 'created_at', 'last_modified']
