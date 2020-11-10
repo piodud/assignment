@@ -2,26 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class GeoLocationData(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    ip = models.GenericIPAddressField()
-    url = models.URLField(null=True)
+class UserUrl(models.Model):
+    reporter = models.ForeignKey('auth.User', related_name='urls', on_delete=models.CASCADE)
+    url = models.URLField()
+    last_modified = models.DateTimeField(auto_now_add=True)
+
+
+class GeoLocation(models.Model):
+    user_geolocation = models.ForeignKey(UserUrl, related_name='geolocations', on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    local_time = models.DateTimeField()
-    is_proxy = models.BooleanField()
-    isp = models.CharField(max_length=50, blank=True)
     continent = models.CharField(max_length=20, blank=True)
     country = models.CharField(max_length=50, blank=True)
     region = models.CharField(max_length=50, blank=True)
-    zip = models.CharField(max_length=10, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
+    city = models.CharField(max_length=50, blank=True)
     last_modified = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['last_modified']
-
-
-
-
