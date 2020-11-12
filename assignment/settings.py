@@ -110,6 +110,8 @@ REST_FRAMEWORK = {
     ],
 }
 
+APPEND_SLASH = True
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class UserUrl(models.Model):
     reporter = models.ForeignKey('auth.User', related_name='urls', on_delete=models.CASCADE)
-    url = models.URLField()
+    ip_or_url = models.CharField(max_length=200)
 
 
 class GeoLocation(models.Model):

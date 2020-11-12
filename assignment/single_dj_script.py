@@ -1,4 +1,6 @@
 import os
+
+from django.contrib.sites import requests
 from django.core.management import execute_from_command_line
 import django
 
@@ -13,17 +15,23 @@ if __name__ == "__main__":
     from rest_framework.parsers import JSONParser
 
     user = User.objects.get(username='admin')
-    userurl = UserUrl.objects.get(reporter=user)
-    geo = GeoLocationSerializer()
-    geo.save()
-    # data = {'user': None, 'url': "http://192.168.1.1"}
+    # userurl = UserUrl.objects.get(reporter=user)
+    import requests
+    ipstack_address = 'http://api.ipstack.com/'
+    token = '2c2794cb412c43cfb23998424fd0a831'
+    url = 'onet.pl'
+    response = requests.post(f'{ipstack_address}{url}?access_key={token}')
+    print(response.json())
+    # data = {... 'https://website.com/id', headers={'Authorization': 'access_token myToken'})'user': None, 'url': "http://192.168.1.1"}
     # instance = UserUrl(**data)
     # instance.save()
 
-    # all = UserUrl.objects.all()
-    # all.delete()
-
-
+    all = UserUrl.objects.all()
+    print(all)
+    all.delete()
+    all = GeoLocation.objects.all()
+    all.delete()
+    print('elee')
     # geoloc = GeoLocation.objects.all()
     # for g in geoloc:
     #     print(g.id,g.ip)

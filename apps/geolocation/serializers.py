@@ -20,18 +20,13 @@ class UserUrlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserUrl
-        fields = ['reporter', 'url', 'last_modified', 'geolocations']
+        fields = ['reporter', 'ip_or_url', 'last_modified', 'geolocations']
         depth = 1
 
 
 class GeoLocationSerializer(serializers.ModelSerializer):
-    user_geolocation = serializers.ReadOnlyField(source='url')
-    longitude = serializers.SerializerMethodField()
-
-    def get_longitude(self, obj):
-        print(obj)
-        return 999.999
+    user_geolocation = serializers.ReadOnlyField(source='ip_or_url')
 
     class Meta:
         model = GeoLocation
-        fields = ['user_geolocation', 'latitude', 'longitude']
+        fields = '__all__'
