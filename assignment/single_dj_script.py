@@ -13,10 +13,15 @@ if __name__ == "__main__":
     from rest_framework.parsers import JSONParser
 
     user = User.objects.get(username='admin')
-    data = {'user': None, 'url': "http://192.168.1.1"}
-    instance = UserUrl(**data)
-    instance.save()
+    userurl = UserUrl.objects.get(reporter=user)
+    geo = GeoLocationSerializer()
+    geo.save()
+    # data = {'user': None, 'url': "http://192.168.1.1"}
+    # instance = UserUrl(**data)
+    # instance.save()
 
+    # all = UserUrl.objects.all()
+    # all.delete()
 
 
     # geoloc = GeoLocation.objects.all()

@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 class UserUrl(models.Model):
     reporter = models.ForeignKey('auth.User', related_name='urls', on_delete=models.CASCADE)
     url = models.URLField()
-    last_modified = models.DateTimeField(auto_now_add=True)
 
 
 class GeoLocation(models.Model):
