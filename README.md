@@ -1,3 +1,8 @@
+### Docker
+`docker pull herezja/assignment:1.0`\
+`docker run -d --name assignment -e "PORT=8765" -e "DEBUG=1" -p 8001:8765 assignment:latest`
+
+
 ### Development configuration:
 
 `python3 -m venv venv`\
@@ -10,10 +15,6 @@
 `python manage.py migrate`\
 `python manage.py collectstatic`\
 `python manage.py runserver`
-
-### Docker
-`docker build -t assignment .`\
-`docker run -d --name assignment -e "PORT=8765" -e "DEBUG=1" -p 8007:8765 web:latest`
 
 
 ### Task
