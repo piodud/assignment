@@ -26,12 +26,15 @@ if __name__ == "__main__":
     # instance = UserUrl(**data)
     # instance.save()
 
+    print(all)
     all = UserUrl.objects.all()
     print(all)
     all.delete()
     all = GeoLocation.objects.all()
     all.delete()
     print('elee')
+    all = User.objects.all()
+    all.delete()
     # geoloc = GeoLocation.objects.all()
     # for g in geoloc:
     #     print(g.id,g.ip)

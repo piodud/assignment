@@ -1,15 +1,12 @@
 import os
-import urllib.parse
-import socket
+
+import requests
+from django.contrib.auth.models import User
+from rest_framework import status, generics, permissions
+from rest_framework.response import Response
+
 from .models import GeoLocation, UserUrl
 from .serializers import GeoLocationSerializer, UserSerializer, UserUrlSerializer
-from django.core.exceptions import ValidationError
-from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, generics, permissions
-from django.contrib.auth.models import User
-import requests
 
 
 class UserList(generics.ListAPIView):
@@ -31,10 +28,11 @@ class UserUrlList(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         address = request.data.get('ip_or_url')
-        response, error_msg = IpStackApi.send_request(address)
+        geolocation_data, error_msg = IpStackApi.send_request(address)
         if error_msg:
-            return Response(error_msg, status=status.HTTP_201_CREATED)
-        geoloc_serializer = GeoLocationSerializer(data={**response})
+            return Response(error_msg, status=status.HTTP_400_BAD_REQUEST)
+
+        geoloc_serializer = GeoLocationSerializer(data={**geolocation_data})
         geoloc_serializer.is_valid(raise_exception=True)
         try:
             instance = UserUrl.objects.get(reporter=request.user,
@@ -47,21 +45,6 @@ class UserUrlList(generics.ListCreateAPIView):
         geoloc_serializer.save(user_geolocation=instance)
         headers = self.get_success_headers(geoloc_serializer.data)
         return Response(geoloc_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    # def perform_create(self, serializer):
-    #     try:
-    #         print('Exists')
-    #         instance = UserUrl.objects.get(reporter=self.request.user,
-    #                                        ip_or_url=serializer.validated_data.get('ip_or_url'))
-    #
-    #     except UserUrl.DoesNotExist:
-    #         instance = serializer.save(reporter=self.request.user)
-    #         print('Does not exist')
-    #
-    #     geolocation_data = IpStackApi.send_request(serializer.validated_data.get('ip_or_url'))
-    #     g_serializer = GeoLocationSerializer(data={**geolocation_data})
-    #     g_serializer.is_valid(raise_exception=True)
-    #     g_serializer.save(user_geolocation=instance)
 
 
 class UserUrlDetail(generics.RetrieveUpdateDestroyAPIView):

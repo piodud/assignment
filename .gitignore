@@ -2,6 +2,7 @@
 .env
 commands.txt
 .idea/
+single_dj_script.py
 
 ### DEFAULT .gitignore for Django projects: ###
 # Byte-compiled / optimized / DLL files
