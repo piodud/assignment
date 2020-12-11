@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps.geolocation',
     'apps.photos',
+    'apps.membership',
 ]
 
 MIDDLEWARE = [
