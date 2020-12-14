@@ -1,9 +1,11 @@
 from io import BytesIO
 
 from PIL import Image as PILImage
+from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from apps.membership.models import Membership, UserMembership
 
 
 def resize_image(image, size=(4096, 4096)):
@@ -25,8 +27,12 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         self.enterprise_image = resize_image(self.basic_image)
-        self.basic_image = resize_image(self.enterprise_image, (4096, 200))
-        self.premium_image = resize_image(self.enterprise_image, (4096, 400))
+        try:
+            membership = UserMembership.objects.get(user=self.owner).membership
+        except Exception:
+            pass
+        self.basic_image = resize_image(self.enterprise_image, (4096, membership.basic_photo_height))
+        self.premium_image = resize_image(self.enterprise_image, (4096, membership.premium_photo_height))
         super().save(*args, **kwargs)
 
     class Meta:
