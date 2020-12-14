@@ -29,10 +29,14 @@ class Image(models.Model):
         self.enterprise_image = resize_image(self.basic_image)
         try:
             membership = UserMembership.objects.get(user=self.owner).membership
-        except Exception:
-            pass
-        self.basic_image = resize_image(self.enterprise_image, (4096, membership.basic_photo_height))
-        self.premium_image = resize_image(self.enterprise_image, (4096, membership.premium_photo_height))
+            self.basic_image = resize_image(self.enterprise_image, (4096, membership.basic_photo_height))
+            self.premium_image = resize_image(self.enterprise_image, (4096, membership.premium_photo_height))
+        except UnboundLocalError as e:
+            print('Cannot get get membership plan')
+            raise e
+        except UserMembership.DoesNotExist:
+            print('Cannot convert images.')
+
         super().save(*args, **kwargs)
 
     class Meta:

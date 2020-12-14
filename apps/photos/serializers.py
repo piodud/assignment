@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import Image
 from apps.membership.models import UserMembership
+from .models import Image
 
 
 def get_user_membership(request):
@@ -41,5 +41,6 @@ class ImageSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         membership = get_user_membership(request)
         if membership and membership.generating_temp_link:
+            # ToDO:
             return 'ToDo: auto-expiring url'
         return 'Not available. Please upgrade to Premium or Enterprise Plan.'
